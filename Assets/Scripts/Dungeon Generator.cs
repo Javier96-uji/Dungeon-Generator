@@ -27,13 +27,13 @@ public class DungeonGenerator : MonoBehaviour
 
         if (splitVertically)
         {
-            int splitX = room.x + room.width / 2;
+            int splitX = room.x + Random.Range(minRoomSize, room.width - minRoomSize);
             leftRoom = new RectInt(room.x, room.y, splitX - room.x, room.height);
             rightRoom = new RectInt(splitX, room.y, room.width - leftRoom.width, room.height);
         }
         else
         {
-            int splitY = room.y + room.height / 2;
+            int splitY = room.y + Random.Range(minRoomSize, room.height - minRoomSize);
             leftRoom = new RectInt(room.x, room.y, room.width, splitY - room.y);
             rightRoom = new RectInt(room.x, splitY, room.width, room.height - leftRoom.height);
         }
