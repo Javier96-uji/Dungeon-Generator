@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -44,6 +45,28 @@ public class Graph<T>
             foreach (var v in kv.Value)
             {
                 Debug.Log(v);
+            }
+        }
+    }
+
+    public void BFS(T v)
+    {
+        List<T> visited = new List<T>();
+        Queue<T> queue = new Queue<T>();
+        queue.Enqueue(v);
+        visited.Add(v);
+
+        while (queue.Count > 0)
+        {
+            v = queue.Dequeue();
+            Debug.Log(v);
+            foreach (var neighbor in GetNeighbors(v))
+            {
+                if (!visited.Contains(neighbor))
+                {
+                    queue.Enqueue(neighbor);
+                    visited.Add(neighbor);
+                }
             }
         }
     }

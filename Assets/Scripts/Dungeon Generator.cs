@@ -10,11 +10,13 @@ public class DungeonGenerator : MonoBehaviour
     public int doorSize = 1;
     private List<RectInt> rooms = new List<RectInt>();
     private List<RectInt> doors = new List<RectInt>();
+    private DungeonGraph graph = new DungeonGraph();
 
     void Start()
     {
         RectInt initialRoom = new RectInt(0, 0, 100, 100);
         Generator(initialRoom);
+        graph.Creategraph(rooms, doors);
     }
 
     void Generator(RectInt room)
@@ -58,13 +60,13 @@ public class DungeonGenerator : MonoBehaviour
 
         if ((endX - startX) > (endY - startY)) // Pasillo horizontal
         {
-            doorX = UnityEngine.Random.Range(startX, endX - doorSize);
+            doorX = UnityEngine.Random.Range(startX + doorSize, endX - doorSize);
             doorY = startY; // Mantener alineacion
         }
         else // Pasillo vertical
         {
             doorX = startX; // Mantener alineacion
-            doorY = UnityEngine.Random.Range(startY, endY - doorSize);
+            doorY = UnityEngine.Random.Range(startY + doorSize, endY - doorSize);
         }
 
         RectInt door = new RectInt(doorX, doorY, doorSize, doorSize);
@@ -100,6 +102,16 @@ public class DungeonGenerator : MonoBehaviour
         foreach (var door in doors)
         {
             AlgorithmsUtils.DebugRectInt(door, Color.blue);
+        }
+
+        foreach(var room in rooms)
+        {
+            foreach (var neighbor in graph.GetNeighbors(room))
+            {
+                Vector3 start = new Vector3(room.center.x, room.center.y, 0);
+                Vector3 end = new Vector3(neighbor.center.x, neighbor.center.y, 0);
+                Debug.DrawLine(start, end, Color.red);
+            }
         }
     }
 }
