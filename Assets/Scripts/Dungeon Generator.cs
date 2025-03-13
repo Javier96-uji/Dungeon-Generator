@@ -46,7 +46,7 @@ public class DungeonGenerator : MonoBehaviour
             rightRoom = new RectInt(room.x, splitY - overlap, room.width, room.height - leftRoom.height + overlap);
         }
 
-        // Recursión
+        // Recursión y despues creo las puertas
         Generator(leftRoom);
         Generator(rightRoom);
         CreateDoor(leftRoom,rightRoom);
@@ -109,7 +109,7 @@ public class DungeonGenerator : MonoBehaviour
 
         foreach(var room in rooms)
         {
-            foreach (var neighbor in graph.GetNeighbors(room))
+            foreach (var neighbor in graph.GetNeighbors(room)) //En cada habitacion miro los vecinos
             {
                 Vector3 start = new Vector3(room.center.x, 0, room.center.y);
                 Vector3 end = new Vector3(neighbor.center.x, 0, neighbor.center.y);
