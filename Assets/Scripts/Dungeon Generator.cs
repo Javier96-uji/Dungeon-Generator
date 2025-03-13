@@ -17,6 +17,9 @@ public class DungeonGenerator : MonoBehaviour
         RectInt initialRoom = new RectInt(0, 0, 100, 100);
         Generator(initialRoom);
         graph.Creategraph(rooms, doors);
+
+        Debug.Log("Grafo generado con " + rooms.Count + " habitaciones y " + doors.Count + " puertas.");
+        graph.Printgraph();
     }
 
     void Generator(RectInt room)
@@ -108,8 +111,8 @@ public class DungeonGenerator : MonoBehaviour
         {
             foreach (var neighbor in graph.GetNeighbors(room))
             {
-                Vector3 start = new Vector3(room.center.x, room.center.y, 0);
-                Vector3 end = new Vector3(neighbor.center.x, neighbor.center.y, 0);
+                Vector3 start = new Vector3(room.center.x, 0, room.center.y);
+                Vector3 end = new Vector3(neighbor.center.x, 0, neighbor.center.y);
                 Debug.DrawLine(start, end, Color.red);
             }
         }

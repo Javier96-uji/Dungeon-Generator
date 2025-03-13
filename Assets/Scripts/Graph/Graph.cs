@@ -20,7 +20,7 @@ public class Graph<T>
     {
         if (!adjacencyList.ContainsKey(fromNode) || !adjacencyList.ContainsKey(toNode))
         {
-            Debug.Log("One or both nodes do not exist in the graph.");
+            Debug.Log($"Uno o ambos nodos no existen: {fromNode} <-> {toNode}");
             return;
         }
         adjacencyList[fromNode].Add(toNode);
