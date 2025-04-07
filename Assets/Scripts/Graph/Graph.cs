@@ -11,16 +11,15 @@ public class Graph<T>
     public Graph() { adjacencyList = new Dictionary<T, List<T>>(); }
     public void AddNode(T node)
     {
-        if (!adjacencyList.ContainsKey(node))
+        if (!adjacencyList.ContainsKey(node))//Creates a node only if it doesn't exist.
         {
             adjacencyList[node] = new List<T>();
         }
     }
     public void AddEdge(T fromNode, T toNode)
     {
-        if (!adjacencyList.ContainsKey(fromNode) || !adjacencyList.ContainsKey(toNode))
+        if (!adjacencyList.ContainsKey(fromNode) || !adjacencyList.ContainsKey(toNode))//Creates an edge if both nodes exist
         {
-            Debug.Log($"Uno o ambos nodos no existen: {fromNode} <-> {toNode}");
             return;
         }
         adjacencyList[fromNode].Add(toNode);
@@ -51,7 +50,7 @@ public class Graph<T>
 
     public void BFS(T v)
     {
-        List<T> visited = new List<T>();
+        List <T> visited = new List<T>();
         Queue<T> queue = new Queue<T>();
         queue.Enqueue(v);
         visited.Add(v);

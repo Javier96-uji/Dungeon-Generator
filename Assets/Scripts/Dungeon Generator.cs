@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,8 +16,12 @@ public class DungeonGenerator : MonoBehaviour
     void Start()
     {
         RectInt initialRoom = new RectInt(0, 0, 100, 100);
-        Generator(initialRoom);
-        graph.Creategraph(rooms, doors);
+
+        //Creates the first room and splits it recursively up to the specified limit
+        Generator(initialRoom); 
+
+        //Creates the graph with the conetions between doors and rooms
+        graph.Creategraph(rooms, doors); 
 
         Debug.Log("Grafo generado con " + rooms.Count + " habitaciones y " + doors.Count + " puertas.");
         graph.Printgraph();
@@ -24,13 +29,14 @@ public class DungeonGenerator : MonoBehaviour
 
     void Generator(RectInt room)
     {
+        //Checks if it's posible to create rooms
         if (room.width < minRoomSize * 2 && room.height < minRoomSize * 2)
         {
             rooms.Add(room);
             return;
         }
 
-        bool splitVertically = room.width > room.height; // División vertical si es más ancho
+        bool splitVertically = room.width > room.height; // Vertical split if its width is bigger
         RectInt leftRoom, rightRoom;
 
         if (splitVertically)
@@ -46,10 +52,10 @@ public class DungeonGenerator : MonoBehaviour
             rightRoom = new RectInt(room.x, splitY - overlap, room.width, room.height - leftRoom.height + overlap);
         }
 
-        // Recursión y despues creo las puertas
+        // The process repeats due to recursion
         Generator(leftRoom);
         Generator(rightRoom);
-        CreateDoor(leftRoom,rightRoom);
+        CreateDoor(leftRoom,rightRoom); //After the map is done, the doors are created
     }
 
     void CreateDoor(RectInt roomA, RectInt roomB)
@@ -61,14 +67,15 @@ public class DungeonGenerator : MonoBehaviour
         int startY = Mathf.Max(roomA.yMin, roomB.yMin);
         int endY = Mathf.Min(roomA.yMax, roomB.yMax);
 
-        if ((endX - startX) > (endY - startY)) // Pasillo horizontal
+        //Determines whether the shared wall is horizontal or vertical and places a random door within a non shared wall
+        if ((endX - startX) > (endY - startY)) // Horizontal wall
         {
             doorX = UnityEngine.Random.Range(startX + doorSize, endX - doorSize);
-            doorY = startY; // Mantener alineacion
+            doorY = startY; // This keeps the oor alinged to the wall
         }
-        else // Pasillo vertical
+        else // Vertical wall
         {
-            doorX = startX; // Mantener alineacion
+            doorX = startX; // This keeps the door alinged to the wall
             doorY = UnityEngine.Random.Range(startY + doorSize, endY - doorSize);
         }
 
@@ -97,19 +104,19 @@ public class DungeonGenerator : MonoBehaviour
 
     void Update()
     {
-        foreach (var room in rooms)
+        foreach (var room in rooms)//Draws the rooms (yellow)
         {
             AlgorithmsUtils.DebugRectInt(room, Color.yellow);
         }
 
-        foreach (var door in doors)
+        foreach (var door in doors)//Draws the doors (blue)
         {
             AlgorithmsUtils.DebugRectInt(door, Color.blue);
         }
 
-        foreach(var room in rooms)
+        foreach(var room in rooms)//Draws the routes (red)
         {
-            foreach (var neighbor in graph.GetNeighbors(room)) //En cada habitacion miro los vecinos
+            foreach (var neighbor in graph.GetNeighbors(room)) //this checks the neighbors
             {
                 Vector3 start = new Vector3(room.center.x, 0, room.center.y);
                 Vector3 end = new Vector3(neighbor.center.x, 0, neighbor.center.y);
