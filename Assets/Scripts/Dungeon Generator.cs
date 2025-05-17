@@ -25,6 +25,13 @@ public class DungeonGenerator : MonoBehaviour
 
         Debug.Log("Grafo generado con " + rooms.Count + " habitaciones y " + doors.Count + " puertas.");
         graph.Printgraph();
+
+        var assetGenerator = FindFirstObjectByType<AssetGenerator>();
+        if (assetGenerator != null)
+        {
+            assetGenerator.Initialize(rooms, doors); // Pasamos los datos lógicos
+            assetGenerator.GenerateAssets();         // Le decimos que instancie cosas
+        }
     }
 
     void Generator(RectInt room)
