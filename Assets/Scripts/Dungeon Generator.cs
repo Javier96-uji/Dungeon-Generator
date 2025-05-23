@@ -9,8 +9,8 @@ public class DungeonGenerator : MonoBehaviour
     public int minRoomSize = 10;
     public int overlap = 1;
     public int doorSize = 1;
-    private List<RectInt> rooms = new List<RectInt>();
-    private List<RectInt> doors = new List<RectInt>();
+    public List<RectInt> rooms = new List<RectInt>();
+    public List<RectInt> doors = new List<RectInt>();
     private DungeonGraph graph = new DungeonGraph();
 
     void Start()
