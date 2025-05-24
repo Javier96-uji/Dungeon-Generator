@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -88,7 +89,6 @@ public class DungeonGenerator : MonoBehaviour
 
         RectInt door = new RectInt(doorX, doorY, doorSize, doorSize);
         doors.Add(door);
-
 
         /*Codigo de prueba
          * RectInt intersetion = RectInt.Intersect(roomA, roomB);

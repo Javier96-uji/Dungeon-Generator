@@ -29,7 +29,8 @@ public class PathFinder : MonoBehaviour
     
     void Start()
     {
-        graphGenerator = GetComponent<GraphGenerator>();
+        if (graphGenerator == null)
+            graphGenerator = FindFirstObjectByType<GraphGenerator>();
         graph = graphGenerator.GetGraph();
     }
 

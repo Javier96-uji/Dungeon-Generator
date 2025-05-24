@@ -6,21 +6,20 @@ using Random = UnityEngine.Random;
 
 public class GraphGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private RectInt dungeonBounds;
+    [SerializeField]private RectInt dungeonBounds;
+    [SerializeField] private TileMapGenerator tileMapGenerator;
 
     private Graph<Vector3> graph = new Graph<Vector3>();
     
     public GameObject floor;
-    
-    private void Start()
-    {
-        GenerateGraph();
-    }
 
     [Button]
-    void GenerateGraph()
+    public void GenerateGraph()
     {
+        if (tileMapGenerator == null)
+            tileMapGenerator = FindFirstObjectByType<TileMapGenerator>();
+
+        dungeonBounds = tileMapGenerator.GetDungeonBounds();
         graph.Clear();
         
         // Connect neighbors

@@ -69,4 +69,12 @@ public class Graph<T>
             }
         }
     }
+    public void Clear()
+    {
+        adjacencyList.Clear();
+    }
+    public List<T> GetNodes()
+    {
+        return new List<T>(adjacencyList.Keys);
+    }
 }
