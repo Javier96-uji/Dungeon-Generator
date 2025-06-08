@@ -17,6 +17,7 @@ public class FloodfillSpawner : MonoBehaviour
         bool[,] visited = new bool[rows, cols];
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
 
+        // Start flood fill from the center of the room
         RectInt room = dungeonGenerator.rooms[0];
         int cx = (room.xMin + room.xMax) / 2;
         int cy = (room.yMin + room.yMax) / 2;
@@ -27,14 +28,18 @@ public class FloodfillSpawner : MonoBehaviour
 
         Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
 
+        //filling
         while (queue.Count > 0)
         {
             Vector2Int current = queue.Dequeue();
             float worldX = bounds.xMin + current.x + 0.5f;
             float worldZ = bounds.yMin + current.y + 0.5f;
             Vector3 spawnPos = new Vector3(worldX, 0f, worldZ);
+
+            // Instantiate floor prefab
             Instantiate(floorPrefab, spawnPos, Quaternion.identity, transform);
 
+            // Enqueue unvisited, non-wall neighbors
             foreach (Vector2Int dir in directions)
             {
                 Vector2Int next = current + dir;

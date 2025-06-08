@@ -19,7 +19,9 @@ public class GraphGenerator : MonoBehaviour
         if (tileMapGenerator == null)
             tileMapGenerator = FindFirstObjectByType<TileMapGenerator>();
 
+        // gets the dungeon bounds
         dungeonBounds = tileMapGenerator.GetDungeonBounds();
+        // Empty any existing nodes or edges
         graph.Clear();
         
         // Connect neighbors
@@ -46,10 +48,11 @@ public class GraphGenerator : MonoBehaviour
         floor.transform.position = new Vector3( dungeonBounds.center.x - .5f, -.5f, dungeonBounds.center.y - .5f);
         floor.transform.localScale = new Vector3(dungeonBounds.width, 1, dungeonBounds.height);
     }
-    
-    
+
+    //Checks if a neighbor coordinate is within bounds, then, adds an edge in the graph
     private void TryConnectNeighbor(int nx, int ny, Vector3 currentPos)
     {
+        // Only connect if neighbor is in bounds
         if (nx >= dungeonBounds.xMin && nx < dungeonBounds.xMax &&
             ny >= dungeonBounds.yMin && ny < dungeonBounds.yMax)
         {
@@ -58,7 +61,7 @@ public class GraphGenerator : MonoBehaviour
         }
     }
     
-    private void Update()
+    private void Update() //Hacer que se vea esto. Tiene que verse una esfera para cada casilla en la que se puede caminar
     {
         foreach (var node in graph.GetNodes())
         {
@@ -70,6 +73,7 @@ public class GraphGenerator : MonoBehaviour
         }
     }
 
+    //this is for external access
     public Graph<Vector3> GetGraph()
     {
         return graph;

@@ -68,45 +68,41 @@ public class DungeonGenerator : MonoBehaviour
 
     void CreateDoor(RectInt roomA, RectInt roomB)
     {
-        int doorX, doorY;
-
         int startX = Mathf.Max(roomA.xMin, roomB.xMin);
         int endX = Mathf.Min(roomA.xMax, roomB.xMax);
         int startY = Mathf.Max(roomA.yMin, roomB.yMin);
         int endY = Mathf.Min(roomA.yMax, roomB.yMax);
 
         //Determines whether the shared wall is horizontal or vertical and places a random door within a non shared wall
+        
         if ((endX - startX) > (endY - startY)) // Horizontal wall
         {
-            doorX = UnityEngine.Random.Range(startX + doorSize, endX - doorSize);
-            doorY = startY; // This keeps the oor alinged to the wall
+            int width = endX - startX;
+            if (width < 1) return;
+            int doorX = (width == 1) ? startX : UnityEngine.Random.Range(startX + 1, endX - 1);
+            int doorY = startY;
+            if (!IsCornerOf(roomA, doorX, doorY) && !IsCornerOf(roomB, doorX, doorY))
+            {
+                doors.Add(new RectInt(doorX, doorY, doorSize, doorSize));
+            }
         }
         else // Vertical wall
         {
-            doorX = startX; // This keeps the door alinged to the wall
-            doorY = UnityEngine.Random.Range(startY + doorSize, endY - doorSize);
+            int height = endY - startY;
+            if (height < 1) return;
+            int doorX = startX;
+            int doorY = (height == 1) ? startY : UnityEngine.Random.Range(startY + 1, endY - 1);
+            if (!IsCornerOf(roomA, doorX, doorY) && !IsCornerOf(roomB, doorX, doorY))
+            {
+                doors.Add(new RectInt(doorX, doorY, doorSize, doorSize));
+            }
+        }
+        bool IsCornerOf(RectInt room, int x, int y)
+        {
+            return (x == room.xMin || x == room.xMax - 1) &&
+                   (y == room.yMin || y == room.yMax - 1);
         }
 
-        RectInt door = new RectInt(doorX, doorY, doorSize, doorSize);
-        doors.Add(door);
-
-        /*Codigo de prueba
-         * RectInt intersetion = RectInt.Intersect(roomA, roomB);
-        if (intersetion.width > 0 && intersetion.height > 0)
-        {
-            RectInt door;
-            if (intersetion.height < intersetion.width)
-            {
-                int doorX = intersetion.x + intersetion.width + doorSize;
-                door = new RectInt(doorX, intersetion.x, doorSize, intersetion.height);
-            }
-            else
-            {
-                int doorY = intersetion.y + intersetion.height + doorSize;
-                door = new RectInt(intersetion.x, doorY, intersetion.width, doorSize);
-            }
-            doors.Add(door);
-        }*/
     }
 
     void Update()

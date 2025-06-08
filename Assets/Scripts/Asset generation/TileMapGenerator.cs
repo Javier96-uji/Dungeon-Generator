@@ -10,13 +10,14 @@ using UnityEngine.Events;
 [DefaultExecutionOrder(3)]
 public class TileMapGenerator : MonoBehaviour
 {
-
+    //trigers an event after the tilemap is generated
     [SerializeField]
     private UnityEvent onGenerateTileMap;
 
     [SerializeField]
     private DungeonGenerator dungeonGenerator;
 
+    //[0 = floor, 1= wall, 2= door]
     private int[,] _tileMap;
 
     private void Start()
@@ -28,8 +29,11 @@ public class TileMapGenerator : MonoBehaviour
     public void GenerateTileMap()
     {
         RectInt bounds = GetDungeonBounds();
+
+        //Initialize the tile map array
         int[,] tileMap = new int[bounds.height, bounds.width];
 
+        //Mark walls (1) of each room
         foreach (var room in dungeonGenerator.rooms)
         {
             for (int x = room.xMin; x < room.xMax; x++)
@@ -43,6 +47,7 @@ public class TileMapGenerator : MonoBehaviour
             }
         }
 
+        //Mark doors (2) for each door rectangle
         foreach (var door in dungeonGenerator.doors)
         {
             for (int x = door.xMin; x < door.xMax; x++)
@@ -54,10 +59,12 @@ public class TileMapGenerator : MonoBehaviour
             }
         }
 
+        // Store the result and fire event
         _tileMap = tileMap;
         onGenerateTileMap.Invoke();
     }
 
+    //Returns a string representation of the tile map
     public string ToString(bool flip)
     {
         if (_tileMap == null) return "Tile map not generated yet.";
@@ -82,6 +89,7 @@ public class TileMapGenerator : MonoBehaviour
         return sb.ToString();
     }
 
+    //copy of the internal tile map
     public int[,] GetTileMap()
     {
         return _tileMap.Clone() as int[,];

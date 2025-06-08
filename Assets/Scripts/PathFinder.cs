@@ -14,7 +14,6 @@ public enum Algorithms
 
 public class PathFinder : MonoBehaviour
 {
-    
     public GraphGenerator graphGenerator;
     
     private Vector3 startNode;
@@ -29,11 +28,13 @@ public class PathFinder : MonoBehaviour
     
     void Start()
     {
+        // Finds the GraphGenerator
         if (graphGenerator == null)
             graphGenerator = FindFirstObjectByType<GraphGenerator>();
         graph = graphGenerator.GetGraph();
     }
 
+    // Finds the node closest to a world position
     private Vector3 GetClosestNodeToPosition(Vector3 position)
     {
         Vector3 closestNode = Vector3.zero;
@@ -108,6 +109,7 @@ public class PathFinder : MonoBehaviour
         var gScore = new Dictionary<Vector3, float>();
         var fScore = new Dictionary<Vector3, float>();
 
+        // Initialize scores
         foreach (var node in graph.GetNodes())
         {
             gScore[node] = float.MaxValue;
@@ -121,15 +123,18 @@ public class PathFinder : MonoBehaviour
 
         while (openSet.Count > 0)
         {
+            // Selects node
             openSet = openSet.OrderByDescending(n => n.fScore).ToList();
             Vector3 current = openSet[openSet.Count - 1].node;
             openSet.RemoveAt(openSet.Count - 1);
 
             discovered.Add(current);
 
+            // If reached the goal, reconstruct the path
             if (current == end)
                 return ReconstructPath(cameFrom, start, end);
 
+            // Evaluate neighbors
             foreach (var neighbor in graph.GetNeighbors(current))
             {
                 float tentativeGScore = gScore[current] + Cost(current, neighbor);
@@ -146,12 +151,14 @@ public class PathFinder : MonoBehaviour
         }
         return new List<Vector3>(); // No path found
     }
-    
+
+    // Cost to move straihgt between two adjacent nodes
     public float Cost(Vector3 from, Vector3 to)
     {
         return Vector3.Distance(from, to);
     }
     
+    // Heuristic function
     public float Heuristic(Vector3 from, Vector3 to)
     {
         return Vector3.Distance(from, to);
@@ -173,6 +180,7 @@ public class PathFinder : MonoBehaviour
         return path;
     }
 
+    // Debug drawing of start, end, discovered nodes, and the final path
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

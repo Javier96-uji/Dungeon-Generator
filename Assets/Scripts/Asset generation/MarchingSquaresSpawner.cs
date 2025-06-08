@@ -13,6 +13,7 @@ public class MarchingSquaresSpawner : MonoBehaviour
 
         RectInt bounds = tileMapGenerator.GetDungeonBounds();
 
+        // Iterate over each 2x2 block of tiles
         for (int y = 0; y < rows - 1; y++)
         {
             for (int x = 0; x < cols - 1; x++)
@@ -23,14 +24,17 @@ public class MarchingSquaresSpawner : MonoBehaviour
                     continue;
                 }
 
+                // Build bitmask: 1 if wall (tile==1), else 0
                 int bl = map[y, x] == 1 ? 1 : 0;
                 int br = map[y, x + 1] == 1 ? 1 : 0;
                 int tr = map[y + 1, x + 1] == 1 ? 1 : 0;
                 int tl = map[y + 1, x] == 1 ? 1 : 0;
 
+                // If all corners are floor, skip
                 if (bl == 0 && br == 0 && tr == 0 && tl == 0)
                     continue;
 
+                // Compute marching squares case index
                 int caseIndex = (br) | (tr << 1) | (tl << 2) | (bl << 3);
 
                 if (casePrefabs[caseIndex] != null)
