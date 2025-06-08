@@ -58,7 +58,7 @@ public class PathFinder : MonoBehaviour
     {
         Vector3 playerPosition = from;
         
-        startNode = GetClosestNodeToPosition(from);
+        startNode = GetClosestNodeToPosition(from); //ensure the graph contains the full dungeon floor
         endNode = GetClosestNodeToPosition(to);
 
         List<Vector3> shortestPath = new List<Vector3>();

@@ -81,9 +81,10 @@ public class DungeonGenerator : MonoBehaviour
         {
             int width = endX - startX;
             if (width < 1) return;
+
             int doorX = (width == 1) ? startX : UnityEngine.Random.Range(startX + 1, endX - 1);
             int doorY = startY;
-            if (!IsCornerOf(roomA, doorX, doorY) && !IsCornerOf(roomB, doorX, doorY))
+            if (IsValid(roomA, roomB, doorX, doorY))
             {
                 doors.Add(new RectInt(doorX, doorY, doorSize, doorSize));
             }
@@ -92,9 +93,10 @@ public class DungeonGenerator : MonoBehaviour
         {
             int height = endY - startY;
             if (height < 1) return;
+
             int doorX = startX;
             int doorY = (height == 1) ? startY : UnityEngine.Random.Range(startY + 1, endY - 1);
-            if (!IsCornerOf(roomA, doorX, doorY) && !IsCornerOf(roomB, doorX, doorY))
+            if (IsValid(roomA, roomB, doorX, doorY))
             {
                 doors.Add(new RectInt(doorX, doorY, doorSize, doorSize));
             }
@@ -103,6 +105,13 @@ public class DungeonGenerator : MonoBehaviour
         {
             return (x == room.xMin || x == room.xMax - 1) &&
                    (y == room.yMin || y == room.yMax - 1);
+        }
+
+        bool IsValid(RectInt roomA, RectInt roomB, int x, int y)
+        {
+            // Door must not be in the corner of either room
+            bool isCorner = (IsCornerOf(roomA, x, y) || IsCornerOf(roomB, x, y));
+            return !isCorner;
         }
 
     }
