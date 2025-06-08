@@ -41,10 +41,10 @@ public class Graph<T>
         {
             Console.WriteLine("Node "+ kv.Key.ToString()  + "is connnected to");
 
-            foreach (var v in kv.Value)
+            /*foreach (var v in kv.Value)
             {
                 Debug.Log(v);
-            }
+            }*/
         }
     }
 

@@ -14,15 +14,17 @@ public class DungeonGenerator : MonoBehaviour
     public List<RectInt> doors = new List<RectInt>();
     private DungeonGraph graph = new DungeonGraph();
 
-    void Start()
+    //I removed the Start() because it was generating the rooms after TileMapGenerator
+    public void GenerateDungeon()
     {
+        Debug.Log("Generating Dungeon...");
         RectInt initialRoom = new RectInt(0, 0, 100, 100);
-
+        
         //Creates the first room and splits it recursively up to the specified limit
-        Generator(initialRoom); 
-
+        Generator(initialRoom);
+        
         //Creates the graph with the conetions between doors and rooms
-        graph.Creategraph(rooms, doors); 
+        graph.Creategraph(rooms, doors);
 
         Debug.Log("Grafo generado con " + rooms.Count + " habitaciones y " + doors.Count + " puertas.");
         graph.Printgraph();
@@ -30,8 +32,8 @@ public class DungeonGenerator : MonoBehaviour
         var assetGenerator = FindFirstObjectByType<AssetGenerator>();
         if (assetGenerator != null)
         {
-            assetGenerator.Initialize(rooms, doors); // Pasamos los datos lógicos
-            assetGenerator.GenerateAssets();         // Le decimos que instancie cosas
+            assetGenerator.Initialize(rooms, doors);// Pasamos los datos lógicos
+            assetGenerator.GenerateAssets();// Le decimos que instancie cosas
         }
     }
 

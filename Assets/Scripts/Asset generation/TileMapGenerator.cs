@@ -20,10 +20,14 @@ public class TileMapGenerator : MonoBehaviour
     //[0 = floor, 1= wall, 2= door]
     private int[,] _tileMap;
 
-    private void Start()
+    /*private void Start()
     {
-        dungeonGenerator = GetComponent<DungeonGenerator>();
-    }
+        Debug.Log("TileMapGenerator Start");
+        if (dungeonGenerator == null)
+            dungeonGenerator = FindFirstObjectByType<DungeonGenerator>();
+        dungeonGenerator.GenerateDungeon();
+        GenerateTileMap();
+    }*/
 
     [Button]
     public void GenerateTileMap()

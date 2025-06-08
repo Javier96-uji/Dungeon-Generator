@@ -58,7 +58,7 @@ public class PathFinder : MonoBehaviour
     {
         Vector3 playerPosition = from;
         
-        startNode = GetClosestNodeToPosition(playerPosition);
+        startNode = GetClosestNodeToPosition(from);
         endNode = GetClosestNodeToPosition(to);
 
         List<Vector3> shortestPath = new List<Vector3>();
