@@ -24,4 +24,34 @@ public class DungeonGraph : Graph<RectInt>
             }
         }
     }
+    public bool IsFullyConnected()
+    {
+        List<RectInt> nodes = GetNodes();
+        if (nodes.Count == 0) return true;
+
+        // Start BFS from the first node
+        List<RectInt> visited = new List<RectInt>();
+        Queue<RectInt> queue = new Queue<RectInt>();
+
+        queue.Enqueue(nodes[0]);
+        visited.Add(nodes[0]);
+
+        while (queue.Count > 0)
+        {
+            RectInt current = queue.Dequeue();
+            foreach (var neighbor in GetNeighbors(current))
+            {
+                if (!visited.Contains(neighbor))
+                {
+                    visited.Add(neighbor);
+                    queue.Enqueue(neighbor);
+                }
+            }
+        }
+
+        // Log comparison result
+        Debug.Log($"Visited nodes: {visited.Count} / Total nodes: {nodes.Count}");
+
+        return visited.Count == nodes.Count;
+    }
 }

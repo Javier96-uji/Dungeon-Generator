@@ -90,10 +90,10 @@ public class GraphGenerator : MonoBehaviour
             tilemap.GenerateTileMap(); // Fill the tile map
             Debug.Log("TileMap Generated");
         }
-        GenerateGraph();
+        GenerateGraph();//Here generates the low level graph
     }
 
-    private void Update() //Hacer que se vea esto. Tiene que verse una esfera para cada casilla en la que se puede caminar
+    private void Update() //this visualizes the low level graph
     {
         foreach (var node in graph.GetNodes())
         {
@@ -112,3 +112,6 @@ public class GraphGenerator : MonoBehaviour
     }
     
 }
+//necesito crear un algoritmo que lea los nodos que se ahan creado y los compare con una lista de nodos visitados
+//estos comprueban que todos los nodos (habitaciones) se pueden alcanzar desde las otras habitaciones.
+//Comprobar que era el high graph y el low graph

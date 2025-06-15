@@ -23,10 +23,12 @@ public class DungeonGenerator : MonoBehaviour
         //Creates the first room and splits it recursively up to the specified limit
         Generator(initialRoom);
         
-        //Creates the graph with the conetions between doors and rooms
+        //Creates the high level graph with the conetions between doors and rooms
         graph.Creategraph(rooms, doors);
 
-        Debug.Log("Grafo generado con " + rooms.Count + " habitaciones y " + doors.Count + " puertas.");
+        //check again if is fully connected
+        bool connected = graph.IsFullyConnected();
+        Debug.Log("Graph fully connected: " + connected);
         graph.Printgraph();
 
         var assetGenerator = FindFirstObjectByType<AssetGenerator>();
@@ -116,8 +118,9 @@ public class DungeonGenerator : MonoBehaviour
 
     }
 
+//This visualizes the high level graph
     void Update()
-    {
+    {        
         foreach (var room in rooms)//Draws the rooms (yellow)
         {
             AlgorithmsUtils.DebugRectInt(room, Color.yellow);

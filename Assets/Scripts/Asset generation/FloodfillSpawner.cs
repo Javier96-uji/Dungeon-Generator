@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 
 public class FloodfillSpawner : MonoBehaviour
 {
     [SerializeField] private TileMapGenerator tileMapGenerator;
     [SerializeField] private DungeonGenerator dungeonGenerator;
     [SerializeField] private GameObject floorPrefab;
+    [SerializeField] private NavMeshSurface NavMesh;
 
     public void SpawnFloodFillFloor()
     {
@@ -45,13 +47,17 @@ public class FloodfillSpawner : MonoBehaviour
                 Vector2Int next = current + dir;
                 if (next.x >= 0 && next.x < cols && next.y >= 0 && next.y < rows)
                 {
-                    if (!visited[next.y, next.x] && map[next.y, next.x] !=1)
+                    if (!visited[next.y, next.x] && map[next.y, next.x] != 1)
                     {
                         queue.Enqueue(next);
                         visited[next.y, next.x] = true;
                     }
                 }
             }
+        }
+        if (NavMesh != null)
+        {
+            NavMesh.BuildNavMesh();
         }
     }
 }
