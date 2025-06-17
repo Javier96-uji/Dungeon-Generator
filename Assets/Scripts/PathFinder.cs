@@ -149,7 +149,7 @@ public class PathFinder : MonoBehaviour
                 }
             }
         }
-        return new List<Vector3>(); // No path found
+        return new List<Vector3>(); // Also with no path found
     }
 
     // Cost to move straihgt between two adjacent nodes

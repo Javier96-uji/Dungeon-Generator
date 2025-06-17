@@ -77,48 +77,60 @@ public class DungeonGenerator : MonoBehaviour
         int startY = Mathf.Max(roomA.yMin, roomB.yMin);
         int endY = Mathf.Min(roomA.yMax, roomB.yMax);
 
-        //Determines whether the shared wall is horizontal or vertical and places a random door within a non shared wall
-        
-        if ((endX - startX) > (endY - startY)) // Horizontal wall
-        {
-            int width = endX - startX;
-            if (width < 1) return;
+        if (startX >= endX || startY >= endY)
+            return;
 
-            int doorX = (width == 1) ? startX : UnityEngine.Random.Range(startX + 1, endX - 1);
-            int doorY = startY;
-            if (IsValid(roomA, roomB, doorX, doorY))
+        //If it's a vertical wall
+        if (endX - startX >= 1 && endY - startY == 1)
+        {
+            List<int> validX = new List<int>();
+            for (int x = startX + 1; x < endX - 1; x++) // avoid corners
             {
-                doors.Add(new RectInt(doorX, doorY, doorSize, doorSize));
+                int roomCount = CountRoomsAt(x, startY);//Check if the tile belongs to both rooms
+                if (roomCount == 2)
+                    validX.Add(x);
+            }
+
+            if (validX.Count > 0)//If valid positions, randomly place the door
+            {
+                int doorX = validX[UnityEngine.Random.Range(0, validX.Count)];
+                doors.Add(new RectInt(doorX, startY, 1, 1));
             }
         }
-        else // Vertical wall
+        // if it's an horizontal wall
+        else if (endY - startY >= 1 && endX - startX == 1)
         {
-            int height = endY - startY;
-            if (height < 1) return;
-
-            int doorX = startX;
-            int doorY = (height == 1) ? startY : UnityEngine.Random.Range(startY + 1, endY - 1);
-            if (IsValid(roomA, roomB, doorX, doorY))
+            List<int> validY = new List<int>();
+            for (int y = startY + 1; y < endY - 1; y++) // avoid corners
             {
-                doors.Add(new RectInt(doorX, doorY, doorSize, doorSize));
+                //Check if the tile belongs to both rooms
+                int roomCount = CountRoomsAt(startX, y);
+                if (roomCount == 2)
+                    validY.Add(y);
+            }
+
+            //If valid positions, randomly place the door
+            if (validY.Count > 0)
+            {
+                int doorY = validY[UnityEngine.Random.Range(0, validY.Count)];
+                doors.Add(new RectInt(startX, doorY, 1, 1));
             }
         }
-        bool IsCornerOf(RectInt room, int x, int y)
+    }
+    //Checks if the are more the two rooms contected
+    int CountRoomsAt(int x, int y)
+    {
+        int count = 0;
+        foreach (var room in rooms)
         {
-            return (x == room.xMin || x == room.xMax - 1) &&
-                   (y == room.yMin || y == room.yMax - 1);
+            if (room.Contains(new Vector2Int(x, y)))
+                count++;
         }
-
-        bool IsValid(RectInt roomA, RectInt roomB, int x, int y)
-        {
-            // Door must not be in the corner of either room
-            bool isCorner = (IsCornerOf(roomA, x, y) || IsCornerOf(roomB, x, y));
-            return !isCorner;
-        }
-
+        return count;
     }
 
-//This visualizes the high level graph
+
+    //This visualizes the high level graph
     void Update()
     {        
         foreach (var room in rooms)//Draws the rooms (yellow)
@@ -142,3 +154,39 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 }
+
+/* This creates doors in the middle of the wall
+ int startX = Mathf.Max(roomA.xMin, roomB.xMin);
+ int endX = Mathf.Min(roomA.xMax, roomB.xMax);
+ int startY = Mathf.Max(roomA.yMin, roomB.yMin);
+ int endY = Mathf.Min(roomA.yMax, roomB.yMax);
+
+ if (startX >= endX || startY >= endY)
+    return;
+
+ Vector2Int center = new Vector2Int(roomA.xMin + roomA.width / 2,roomA.yMin + roomA.height / 2); // o roomB.center
+
+// Searches for the closets point to the rooms centre
+ Vector2Int best = new Vector2Int((startX + endX) / 2, (startY + endY) / 2);
+ float bestDist = float.MaxValue;
+
+ for (int y = startY; y < endY; y++)
+ {
+    for (int x = startX; x < endX; x++)
+    {
+        Vector2Int p = new Vector2Int(x, y);
+        int roomCount = CountRoomsAt(x, y);
+        if (roomCount == 2)
+        {
+            float dist = Vector2Int.Distance(center, p);
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                best = p;
+            }
+        }
+    }
+ }
+ if (bestDist < float.MaxValue)
+    doors.Add(new RectInt(best.x, best.y, 1, 1));
+ */

@@ -62,7 +62,7 @@ public class GraphGenerator : MonoBehaviour
     }
 
     //Checks if a neighbor coordinate is within bounds, then, adds an edge in the graph
-    private void TryConnectNeighbor(int nx, int ny, Vector3 currentPos)
+    /*private void TryConnectNeighbor(int nx, int ny, Vector3 currentPos)
     {
         // Only connect if neighbor is in bounds
         if (nx >= dungeonBounds.xMin && nx < dungeonBounds.xMax &&
@@ -71,7 +71,7 @@ public class GraphGenerator : MonoBehaviour
             Vector3 neighborPos = new Vector3(nx, 0, ny);
             graph.AddEdge(currentPos, neighborPos);
         }
-    }
+    }*/
     void Start()
     {
         var dungeon = FindFirstObjectByType<DungeonGenerator>();
@@ -95,14 +95,14 @@ public class GraphGenerator : MonoBehaviour
 
     private void Update() //this visualizes the low level graph
     {
-        foreach (var node in graph.GetNodes())
+        /*foreach (var node in graph.GetNodes())
         {
             DebugExtension.DebugWireSphere(node, Color.cyan, .2f);
             foreach (var neighbor in graph.GetNeighbors(node))
             {
                 Debug.DrawLine(node, neighbor, Color.cyan);
             }
-        }
+        }*/
     }
 
     //this is for external access
