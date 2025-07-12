@@ -208,5 +208,3 @@ public class PathFinder : MonoBehaviour
         
     }
 }
-//Tengo que usar el navmesh system de unity para crear la navegacion del personaje
-//tiene que crearse y hacer el bake despues de crear las pareedes y, puede ser que tambien el suelo?

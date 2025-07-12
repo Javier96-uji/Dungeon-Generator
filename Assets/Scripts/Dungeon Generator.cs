@@ -34,8 +34,8 @@ public class DungeonGenerator : MonoBehaviour
         var assetGenerator = FindFirstObjectByType<AssetGenerator>();
         if (assetGenerator != null)
         {
-            assetGenerator.Initialize(rooms, doors);// Pasamos los datos lógicos
-            assetGenerator.GenerateAssets();// Le decimos que instancie cosas
+            assetGenerator.Initialize(rooms, doors);
+            assetGenerator.GenerateAssets();
         }
     }
 
